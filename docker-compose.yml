@@ -1,0 +1,26 @@
+services:
+  jupyterhub:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jupyterhub-data:/srv/jupyterhub/data
+    environment:
+      - AUTH_MODE=${AUTH_MODE}
+      - TEST_PASSWORD=${TEST_PASSWORD}
+      - MOODLE_URL=${MOODLE_URL}
+      - LTI_CLIENT_ID=${LTI_CLIENT_ID}
+      - NOTEBOOK_IMAGE=${NOTEBOOK_IMAGE}
+      - ADMIN_USERS=${ADMIN_USERS}
+      - MAX_ACTIVE=${MAX_ACTIVE}
+    networks:
+      default:
+      jupyterhub-net:
+        aliases: [jupyterhub-hub]
+
+volumes:
+  jupyterhub-data:
+
+networks:
+  jupyterhub-net:
+    external: true
